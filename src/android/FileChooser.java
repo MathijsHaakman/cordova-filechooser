@@ -9,7 +9,11 @@ import org.apache.cordova.CordovaArgs;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class FileChooser extends CordovaPlugin {
 
@@ -22,19 +26,30 @@ public class FileChooser extends CordovaPlugin {
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals(ACTION_OPEN)) {
-            chooseFile(callbackContext);
+            chooseFile(callbackContext, args);
             return true;
         }
 
         return false;
     }
 
-    public void chooseFile(CallbackContext callbackContext) {
+    public void chooseFile(CallbackContext callbackContext, CordovaArgs args) throws JSONException {
 
         // type and title should be configurable
 
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
+        JSONObject arguments =  args.getJSONObject(0);
+        JSONArray arrMimeTypes = arguments.getJSONArray("mimeTypes");
+        List<String> stringList = new ArrayList<String>();
+        int len = arrMimeTypes.length();
+        if(len > 0) {
+            for(int i = 0; i < len; i++ ) {
+                stringList.add(arrMimeTypes.getString(i));
+            }
+            String[] mimeTypes = stringList.toArray( new String[] {} );
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        }
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
 
