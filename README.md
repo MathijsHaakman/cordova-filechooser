@@ -62,7 +62,7 @@ Optional parameters to customize the files to choose.
 ### Properties
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| mimeTypes | array | [] | An array of strings of MIME types. Filling this array with MIME types limits the fileChooser to choose files with only these MIME types. |
+| mimeTypes | array | [] | An array of strings of MIME types. Filling this array with MIME types limits the fileChooser to choose files with only these MIME types. MIME types can be concrete (such as "image/png") or partial (such as "audio/*").|
 
 
 # Screenshot
