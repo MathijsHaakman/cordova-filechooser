@@ -46,7 +46,7 @@ filleChooser.open(
 Function which is called when a file is chosen.
 
 ### Parameters
-- __uri__: The URI of the chosen file.
+- __uri__: The URI of the chosen file. Example URI: ```content://com.android.providers.downloads.documents/document/2432```
 
 
 ## errorCallback
