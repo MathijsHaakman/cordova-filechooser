@@ -1,5 +1,5 @@
 module.exports = {
-    open: function (options, success, failure) {
+    open: function (success, failure, options) {
         cordova.exec(success, failure, "FileChooser", "open", [options || {}]);
     }
 };
