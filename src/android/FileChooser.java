@@ -36,8 +36,6 @@ public class FileChooser extends CordovaPlugin {
 
     public void chooseFile(CallbackContext callbackContext, CordovaArgs args) throws JSONException {
 
-        // type and title should be configurable
-
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         JSONObject arguments =  args.getJSONObject(0);
@@ -80,15 +78,11 @@ public class FileChooser extends CordovaPlugin {
                 } else {
 
                     callback.error("File uri was null");
-
                 }
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
 
-                // TODO NO_RESULT or error callback?
-                PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
-                callback.sendPluginResult(pluginResult);
-
+                callback.error("No file selected");
             } else {
 
                 callback.error(resultCode);
