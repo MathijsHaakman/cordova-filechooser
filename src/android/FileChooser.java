@@ -1,6 +1,7 @@
 package com.megster.cordova;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -13,7 +14,6 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class FileChooser extends CordovaPlugin {
     private static final String TAG = "FileChooser";
     private static final String ACTION_OPEN = "open";
     private static final int PICK_FILE_REQUEST = 1;
+    private static boolean PICK_MULTIPLE_FILES = false;
     CallbackContext callback;
 
     @Override
@@ -65,8 +66,12 @@ public class FileChooser extends CordovaPlugin {
             }
 
         }
+        if(arguments.has("multipleFiles")) {
+            PICK_MULTIPLE_FILES = arguments.optBoolean("multipleFiles");
+        }
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, PICK_MULTIPLE_FILES);
 
         Intent chooser = Intent.createChooser(intent, "Select File");
         cordova.startActivityForResult(this, chooser, PICK_FILE_REQUEST);
@@ -81,8 +86,16 @@ public class FileChooser extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == PICK_FILE_REQUEST && callback != null) {
-
-            if (resultCode == Activity.RESULT_OK) {
+            if(PICK_MULTIPLE_FILES) {
+                List<String> retrievedUris = new ArrayList<String>();
+                ClipData clipData = data.getClipData();
+                for(int i = 0; i < clipData.getItemCount(); i++) {
+                    ClipData.Item item = clipData.getItemAt(i);
+                    retrievedUris.add(item.getUri().toString());
+                }
+                JSONArray jsonArray = new JSONArray(retrievedUris);
+                callback.success(jsonArray);
+            } else if (resultCode == Activity.RESULT_OK) {
 
                 Uri uri = data.getData();
 
