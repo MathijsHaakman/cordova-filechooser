@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,15 +40,30 @@ public class FileChooser extends CordovaPlugin {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         JSONObject arguments =  args.getJSONObject(0);
-        JSONArray arrMimeTypes = arguments.getJSONArray("mimeTypes");
-        List<String> stringList = new ArrayList<String>();
-        int len = arrMimeTypes.length();
-        if(len > 0) {
-            for(int i = 0; i < len; i++ ) {
-                stringList.add(arrMimeTypes.getString(i));
+        if(arguments.has("mimeTypes")) {
+            Object aObj = arguments.get("mimeTypes");
+            List<String> stringList = new ArrayList<String>();
+            if(aObj instanceof String){
+                String mimeType = arguments.getString("mimeTypes");
+                if(!mimeType.equals("")) {
+                    stringList.add(mimeType);
+                }
+            } else if (aObj instanceof JSONArray) {
+                JSONArray arrMimeTypes = arguments.getJSONArray("mimeTypes");
+                int len = arrMimeTypes.length();
+                if(len > 0) {
+                    for(int i = 0; i < len; i++ ) {
+                        if(!arrMimeTypes.getString(i).equals("")) {
+                            stringList.add(arrMimeTypes.getString(i));
+                        }
+                    }
+                }
             }
-            String[] mimeTypes = stringList.toArray( new String[] {} );
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+            if(stringList.size() > 0) {
+                String[] mimeTypes = stringList.toArray( new String[] {} );
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+            }
+
         }
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
