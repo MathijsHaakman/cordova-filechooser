@@ -8,12 +8,12 @@ Requires Cordova >= 2.8.0
 # Installation
 Install with Cordova CLI
 
-	$ cordova plugin add https://github.com/MathijsHaakman/cordova-filechooser.git
+  $ cordova plugin add https://github.com/MathijsHaakman/cordova-filechooser.git
 
 Install with Plugman
 
-	$ plugman --platform android --project /path/to/project \
-		--plugin https://github.com/MathijsHaakman/cordova-filechooser.git
+  $ plugman --platform android --project /path/to/project \
+    --plugin https://github.com/MathijsHaakman/cordova-filechooser.git
 
 
 # API reference
@@ -63,6 +63,7 @@ Optional parameters to customize the files to choose.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | mimeTypes | array | [] | An array of strings of MIME types. Filling this array with MIME types limits the fileChooser to choose files with only these MIME types. MIME types can be concrete (such as "image/png") or partial (such as "audio/*").|
+| multipleFiles | boolean | false | Set this option to true if you want the user to be able to select multiple files. The successCallback is an array of all URIs|
 
 
 # Screenshot
