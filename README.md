@@ -46,7 +46,7 @@ filleChooser.open(
 Function which is called when a file is chosen.
 
 ### Parameters
-- __uri__: The URI of the chosen file. Example URI: ```content://com.android.providers.downloads.documents/document/2432```
+- __uri__: An array of all the URIs chosen. Example URI: ```content://com.android.providers.downloads.documents/document/2432```
 
 
 ## errorCallback
@@ -63,7 +63,7 @@ Optional parameters to customize the files to choose.
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | mimeTypes | array | [] | An array of strings of MIME types. Filling this array with MIME types limits the fileChooser to choose files with only these MIME types. MIME types can be concrete (such as "image/png") or partial (such as "audio/*").|
-| multipleFiles | boolean | false | Set this option to true if you want the user to be able to select multiple files. The successCallback is an array of all URIs|
+| multipleFiles | boolean | false | Set this option to true if you want the user to be able to select multiple files.
 
 
 # Screenshot
